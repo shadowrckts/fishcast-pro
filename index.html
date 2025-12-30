@@ -747,6 +747,186 @@
             color: var(--color-catch);
         }
 
+        /* Score Breakdown Dropdown */
+        .score-breakdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+            padding: 0.4rem 0.75rem;
+            background: transparent;
+            border: 1px solid rgba(139, 167, 184, 0.2);
+            border-radius: var(--radius-sm);
+            color: var(--color-text-muted);
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .score-breakdown-toggle:hover {
+            background: rgba(139, 167, 184, 0.1);
+            color: var(--color-text);
+            border-color: rgba(139, 167, 184, 0.3);
+        }
+
+        .score-breakdown-toggle .toggle-arrow {
+            transition: transform 0.2s;
+            font-size: 0.65rem;
+        }
+
+        .score-breakdown-toggle.open .toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .score-breakdown-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .score-breakdown-container.open {
+            max-height: 500px;
+        }
+
+        .score-breakdown {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            text-align: left;
+        }
+
+        .score-breakdown-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+        }
+
+        .score-factor {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(139, 167, 184, 0.1);
+        }
+
+        .score-factor:last-child {
+            border-bottom: none;
+        }
+
+        .score-factor-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-factor-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .score-factor-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .score-factor-name {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .score-factor-detail {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+        }
+
+        .score-factor-value {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .score-factor-points {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .score-factor-points.positive {
+            color: var(--color-catch);
+        }
+
+        .score-factor-points.negative {
+            color: var(--color-alert);
+        }
+
+        .score-factor-points.neutral {
+            color: var(--color-text-muted);
+        }
+
+        .score-factor-bar {
+            width: 40px;
+            height: 6px;
+            background: rgba(139, 167, 184, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .score-factor-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .score-factor-bar-fill.positive {
+            background: linear-gradient(90deg, var(--color-catch), #4ade80);
+        }
+
+        .score-factor-bar-fill.negative {
+            background: linear-gradient(90deg, var(--color-alert), #f87171);
+        }
+
+        .score-breakdown-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 2px solid rgba(139, 167, 184, 0.2);
+        }
+
+        .score-breakdown-total-label {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .score-breakdown-total-value {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-catch) 0%, var(--color-golden) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         /* Data Cards */
         .data-card {
             background: var(--color-glass);
@@ -1575,6 +1755,26 @@
                             <div class="score-value" id="fishing-score">--</div>
                             <div class="score-label">Fishing Score</div>
                             <div class="score-rating" id="score-rating">Select Location</div>
+                            
+                            <!-- Score Breakdown Toggle -->
+                            <button class="score-breakdown-toggle" id="score-breakdown-toggle" onclick="toggleScoreBreakdown()">
+                                <span>View Score Breakdown</span>
+                                <span class="toggle-arrow">▼</span>
+                            </button>
+                            
+                            <!-- Score Breakdown Container -->
+                            <div class="score-breakdown-container" id="score-breakdown-container">
+                                <div class="score-breakdown">
+                                    <div class="score-breakdown-title">Score Factors</div>
+                                    <div id="score-factors-list">
+                                        <!-- Factors populated by JavaScript -->
+                                    </div>
+                                    <div class="score-breakdown-total">
+                                        <span class="score-breakdown-total-label">Final Score</span>
+                                        <span class="score-breakdown-total-value" id="score-breakdown-total">--</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Solunar -->
@@ -3770,11 +3970,31 @@
         function calculateFishingScore() {
             let score = 50;
             let factors = [];
+            let detailedFactors = [];
+            
+            // Base score factor
+            detailedFactors.push({
+                name: 'Base Score',
+                detail: 'Starting point',
+                icon: '🎯',
+                points: 50,
+                type: 'neutral'
+            });
             
             // Solunar factor
             if (state.cachedData.solunar) {
-                const solunarAdjust = (state.cachedData.solunar.rating - 50) * 0.3;
+                const solunarAdjust = Math.round((state.cachedData.solunar.rating - 50) * 0.3);
                 score += solunarAdjust;
+                
+                const phaseName = state.cachedData.solunar.phaseName || 'Moon Phase';
+                detailedFactors.push({
+                    name: 'Moon Phase',
+                    detail: phaseName,
+                    icon: state.cachedData.solunar.moonEmoji || '🌙',
+                    points: solunarAdjust,
+                    type: solunarAdjust > 0 ? 'positive' : solunarAdjust < 0 ? 'negative' : 'neutral'
+                });
+                
                 if (solunarAdjust > 5) factors.push({ label: 'Moon Phase', value: '+', icon: '🌙', positive: true });
                 else if (solunarAdjust < -5) factors.push({ label: 'Moon Phase', value: '-', icon: '🌙', positive: false });
             }
@@ -3788,32 +4008,133 @@
                 // Pressure
                 if (current.barometricPressure?.value) {
                     pressure = current.barometricPressure.value / 100;
+                    let pressurePoints = 0;
+                    let pressureType = 'neutral';
+                    
                     if (pressure < 1010) {
+                        pressurePoints = 10;
+                        pressureType = 'positive';
                         score += 10;
                         factors.push({ label: 'Low Pressure', value: Math.round(pressure) + ' mb', icon: '📉', positive: true });
                     } else if (pressure > 1020) {
+                        pressurePoints = -5;
+                        pressureType = 'negative';
                         score -= 5;
                         factors.push({ label: 'High Pressure', value: Math.round(pressure) + ' mb', icon: '📈', positive: false });
                     }
+                    
+                    detailedFactors.push({
+                        name: 'Barometric Pressure',
+                        detail: Math.round(pressure) + ' mb',
+                        icon: pressure < 1010 ? '📉' : pressure > 1020 ? '📈' : '🔘',
+                        points: pressurePoints,
+                        type: pressureType
+                    });
                 }
                 
                 // Wind
                 if (current.windSpeed?.value != null) {
                     windMph = current.windSpeed.value * 2.237;
+                    let windPoints = 0;
+                    let windType = 'neutral';
+                    
                     if (windMph < 10) {
+                        windPoints = 10;
+                        windType = 'positive';
                         score += 10;
                         factors.push({ label: 'Calm Wind', value: Math.round(windMph) + ' mph', icon: '🍃', positive: true });
                     } else if (windMph > 20) {
+                        windPoints = -15;
+                        windType = 'negative';
                         score -= 15;
                         factors.push({ label: 'High Wind', value: Math.round(windMph) + ' mph', icon: '💨', positive: false });
                     }
+                    
+                    detailedFactors.push({
+                        name: 'Wind Speed',
+                        detail: Math.round(windMph) + ' mph',
+                        icon: windMph < 10 ? '🍃' : windMph > 20 ? '💨' : '🌬️',
+                        points: windPoints,
+                        type: windType
+                    });
+                }
+                
+                // Temperature factor (bonus for ideal fishing temps)
+                if (current.temperature?.value != null) {
+                    const tempF = current.temperature.value * 9/5 + 32;
+                    let tempPoints = 0;
+                    let tempType = 'neutral';
+                    
+                    if (tempF >= 55 && tempF <= 75) {
+                        tempPoints = 5;
+                        tempType = 'positive';
+                        score += 5;
+                    } else if (tempF < 40 || tempF > 90) {
+                        tempPoints = -5;
+                        tempType = 'negative';
+                        score -= 5;
+                    }
+                    
+                    detailedFactors.push({
+                        name: 'Air Temperature',
+                        detail: Math.round(tempF) + '°F',
+                        icon: tempF < 50 ? '❄️' : tempF > 80 ? '🌡️' : '🌤️',
+                        points: tempPoints,
+                        type: tempType
+                    });
                 }
             }
             
             // Flow factor
-            if (state.cachedData.gauges?.some(g => g.discharge)) {
+            const hasFlow = state.cachedData.gauges?.some(g => g.discharge);
+            if (hasFlow) {
                 score += 5;
                 factors.push({ label: 'Active Flow', value: state.cachedData.gauges.length + ' gauges', icon: '💧', positive: true });
+                detailedFactors.push({
+                    name: 'Stream Flow Data',
+                    detail: state.cachedData.gauges.filter(g => g.discharge).length + ' active gauges',
+                    icon: '💧',
+                    points: 5,
+                    type: 'positive'
+                });
+            }
+            
+            // Water temperature bonus
+            const waterTempGauge = state.cachedData.gauges?.find(g => g.temperature);
+            if (waterTempGauge) {
+                const waterTempC = parseFloat(waterTempGauge.temperature.value);
+                const waterTempF = waterTempC * 9/5 + 32;
+                let waterPoints = 0;
+                let waterType = 'neutral';
+                
+                if (waterTempF >= 50 && waterTempF <= 70) {
+                    waterPoints = 5;
+                    waterType = 'positive';
+                    score += 5;
+                } else if (waterTempF < 40 || waterTempF > 80) {
+                    waterPoints = -5;
+                    waterType = 'negative';
+                    score -= 5;
+                }
+                
+                detailedFactors.push({
+                    name: 'Water Temperature',
+                    detail: Math.round(waterTempF) + '°F',
+                    icon: '🌊',
+                    points: waterPoints,
+                    type: waterType
+                });
+            }
+            
+            // Tide factor (if near coast)
+            if (state.cachedData.tides?.length > 0) {
+                detailedFactors.push({
+                    name: 'Tidal Activity',
+                    detail: state.cachedData.tides.length + ' stations nearby',
+                    icon: '🌊',
+                    points: 0,
+                    type: 'neutral'
+                });
             }
             
             score = Math.max(0, Math.min(100, Math.round(score)));
@@ -3829,8 +4150,59 @@
             
             document.getElementById('score-rating').textContent = rating;
             
+            // Render score breakdown
+            renderScoreBreakdown(detailedFactors, score);
+            
             // Render quick stats
             renderQuickStats(factors, score, rating);
+        }
+        
+        function renderScoreBreakdown(factors, finalScore) {
+            const container = document.getElementById('score-factors-list');
+            if (!container) return;
+            
+            // Filter to only show factors that contribute (have points or are base)
+            const relevantFactors = factors.filter(f => f.points !== 0 || f.name === 'Base Score');
+            
+            container.innerHTML = relevantFactors.map(factor => {
+                const pointsDisplay = factor.points > 0 ? `+${factor.points}` : factor.points === 0 ? '±0' : `${factor.points}`;
+                const barWidth = Math.min(Math.abs(factor.points) * 4, 100); // Scale bar width
+                
+                return `
+                    <div class="score-factor">
+                        <div class="score-factor-left">
+                            <div class="score-factor-icon">${factor.icon}</div>
+                            <div class="score-factor-info">
+                                <div class="score-factor-name">${factor.name}</div>
+                                <div class="score-factor-detail">${factor.detail}</div>
+                            </div>
+                        </div>
+                        <div class="score-factor-value">
+                            <div class="score-factor-bar">
+                                <div class="score-factor-bar-fill ${factor.type}" style="width: ${barWidth}%"></div>
+                            </div>
+                            <div class="score-factor-points ${factor.type}">${pointsDisplay}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('score-breakdown-total').textContent = finalScore;
+        }
+        
+        function toggleScoreBreakdown() {
+            const toggle = document.getElementById('score-breakdown-toggle');
+            const container = document.getElementById('score-breakdown-container');
+            
+            toggle.classList.toggle('open');
+            container.classList.toggle('open');
+            
+            const label = toggle.querySelector('span:first-child');
+            if (container.classList.contains('open')) {
+                label.textContent = 'Hide Score Breakdown';
+            } else {
+                label.textContent = 'View Score Breakdown';
+            }
         }
         
         function renderQuickStats(factors, score, rating) {
